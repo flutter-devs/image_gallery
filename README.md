@@ -2,7 +2,7 @@ For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
 
-[![Pub](https://img.shields.io/badge/Pub-0.0.1-orange.svg?style=flat-square)](https://pub.dartlang.org/packages/image_gallery)
+[![Pub](https://img.shields.io/badge/Pub-0.1.1-orange.svg?style=flat-square)](https://pub.dartlang.org/packages/image_gallery)
 
 
 # image_gallery

@@ -1,6 +1,6 @@
 name: image_gallery
 description: Flutter plugin to showing all the images from the storage in Android and iOS .
-version: 0.0.1
+version: 0.1.0
 authors:
 - Manoj Kumar <manoj@aeologic.com>
 - Virander <virander@aeologic.com>
