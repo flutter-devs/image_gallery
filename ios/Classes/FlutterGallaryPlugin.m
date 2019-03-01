@@ -1,5 +1,5 @@
 #import "FlutterGallaryPlugin.h"
-#import <flutter_gallary_plugin/flutter_gallary_plugin-Swift.h>
+#import <image_gallery/image_gallery-Swift.h>
 
 @implementation FlutterGallaryPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
