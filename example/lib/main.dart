@@ -16,6 +16,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<Object> allImage = new List();
 
+//  var data = allImageTemp[i] as Map<dynamic, dynamic>;
+
   @override
   void initState() {
     super.initState();
@@ -56,18 +58,23 @@ class _MyAppState extends State<MyApp> {
   }
 
   List<Container> _buildGridTileList(int count) {
-
     return List<Container>.generate(
     count,
     (int index) =>
-    Container(child: Image.file(File(allImage[index].toString()),
+        Container(child: Image.file(File(
+            _getFilePath(index)),
+//    Container(child: Image.file(File(
+//        allImage[index].toString()),
     width: 96.0,
     height: 96.0,
-    fit: BoxFit.contain,)));
+    fit: BoxFit.contain,)
+    ));
+
+
   }
 
-
-
-
-
+  String _getFilePath(int itemIndex){
+    var data = allImage[itemIndex] as Map<dynamic, dynamic>;
+    return data['thumbailPath'].toString();
+  }
 }
