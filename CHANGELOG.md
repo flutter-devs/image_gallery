@@ -1,4 +1,8 @@
-## 0.1.0
+## 1.2.0
+
+* Bug Fixed
+
+## 0.1.1
 
 * Version Modified
 
