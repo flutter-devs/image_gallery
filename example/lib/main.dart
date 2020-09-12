@@ -28,12 +28,12 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> loadImageList() async {
     Map<dynamic, dynamic>  allImageTemp;
-      allImageTemp = await FlutterGallaryPlugin.getAllImages;
+      allImageTemp = await FlutterGallaryPlugin.getAllVideos;
       print(" call $allImageTemp.length");
 
 
     setState(() {
-      this.allImage = allImageTemp['URIList'] as List;
+      this.allImage = allImageTemp['THUMBNAIL'] as List;
       this.allNameList = allImageTemp['DISPLAY_NAME'] as List;
     });
   }

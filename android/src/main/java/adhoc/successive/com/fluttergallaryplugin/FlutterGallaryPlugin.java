@@ -38,6 +38,8 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
     private Application.ActivityLifecycleCallbacks activityLifecycleCallbacks;
     Result result;
 
+    MethodCall mMethodCall;
+
     HashMap<String, List> allImageInfoList = new HashMap<>();
 
     public static void registerWith(Registrar registrar) {
@@ -45,7 +47,7 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
         channel.setMethodCallHandler(new FlutterGallaryPlugin(registrar.activity(), channel, registrar));
     }
 
-    public FlutterGallaryPlugin(Activity activity, MethodChannel methodChannel, Registrar registrar) {
+    public FlutterGallaryPlugin(Activity activity, final MethodChannel methodChannel, Registrar registrar) {
         this.activity = activity;
         this.methodChannel = methodChannel;
         this.methodChannel.setMethodCallHandler(this);
@@ -65,7 +67,14 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
                         @Override
                         public void onActivityResumed(Activity activity) {
 
-                            getPermissionResult(result, activity);
+                            if (mMethodCall.method.equals("getAllImages")) {
+                                getPermissionResult(result, activity,true);
+                            } else if(mMethodCall.method.equals("getAllVideos")){
+                                getPermissionResult(result,activity,false);
+                            }else
+                            {
+                                result.notImplemented();
+                            }
 
                         }
 
@@ -95,23 +104,30 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
     @Override
     public void onMethodCall(MethodCall call, Result result) {
 
+        mMethodCall = call;
+
         this.result = result;
         if (call.method.equals("getAllImages")) {
-
-            getPermissionResult(result, activity);
-        } else {
+            getPermissionResult(result, activity,true);
+        } else if(call.method.equals("getAllVideos")){
+            getPermissionResult(result,activity,false);
+        }else
+        {
             result.notImplemented();
         }
     }
 
 
-    public void getPermissionResult(final Result result, final Activity activity) {
+    public void getPermissionResult(final Result result, final Activity activity, final boolean isImage) {
         Dexter.withActivity(activity)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
+                        if(isImage)
                         result.success(getAllImageList(activity));
+                        else
+                        result.success(getAllVideoList(activity));
                     }
 
                     @Override
@@ -183,6 +199,7 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
                 MediaStore.Images.ImageColumns.DISPLAY_NAME,
                 MediaStore.Images.ImageColumns.DATE_ADDED,
                 MediaStore.Images.ImageColumns.TITLE};
+
         Cursor c = activity.getContentResolver().query(uri, projection, null, null, null);
         if (c != null) {
             while (c.moveToNext()) {
@@ -199,6 +216,53 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
             c.close();
 
             allImageInfoList.put("URIList", allImageList);
+            allImageInfoList.put("DISPLAY_NAME", displayNameList);
+            allImageInfoList.put("DATE_ADDED", dateAddedList);
+            allImageInfoList.put("TITLE", titleList);
+            allImageInfoList.put("THUMBNAIL", titleList);
+
+        }
+        return allImageInfoList;
+    }
+
+
+
+
+
+
+
+
+    public HashMap<String, List> getAllVideoList(Activity activity) {
+
+        ArrayList<String> allVideoList = new ArrayList<>();
+        ArrayList<String> displayNameList = new ArrayList<>();
+        ArrayList<String> dateAddedList = new ArrayList<>();
+        ArrayList<String> titleList = new ArrayList<>();
+
+        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = {
+                MediaStore.Video.VideoColumns.DATA,
+                MediaStore.Video.Media.DISPLAY_NAME,
+                MediaStore.Video.Media.DATE_ADDED,
+                MediaStore.Video.Media.TITLE,
+        };
+        Cursor c = activity.getContentResolver().query(uri, projection, null, null, null);
+        if (c != null) {
+            while (c.moveToNext()) {
+//                Log.e("", "getAllImageList: " + c.getString(0));
+//                Log.e("", "getAllImageList: " + c.getString(1));
+//                Log.e("", "getAllImageList: " + c.getString(2));
+//                Log.e("", "getAllImageList: " + c.getString(3));
+                Log.e("", "getAllImageList: " + c.getString(0));
+
+                titleList.add(c.getString(3));
+                displayNameList.add(c.getString(1));
+                dateAddedList.add(c.getString(2));
+                allVideoList.add(c.getString(0));
+            }
+            c.close();
+
+            allImageInfoList.put("URIList", allVideoList);
             allImageInfoList.put("DISPLAY_NAME", displayNameList);
             allImageInfoList.put("DATE_ADDED", dateAddedList);
             allImageInfoList.put("TITLE", titleList);
