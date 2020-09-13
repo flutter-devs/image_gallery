@@ -244,7 +244,7 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
                 MediaStore.Video.VideoColumns.DATA,
                 MediaStore.Video.Media.DISPLAY_NAME,
                 MediaStore.Video.Media.DATE_ADDED,
-                MediaStore.Video.Media.TITLE,
+                MediaStore.Video.Media.DURATION,
         };
         Cursor c = activity.getContentResolver().query(uri, projection, null, null, null);
         if (c != null) {
@@ -254,6 +254,7 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
 //                Log.e("", "getAllImageList: " + c.getString(2));
 //                Log.e("", "getAllImageList: " + c.getString(3));
                 Log.e("", "getAllImageList: " + c.getString(0));
+                Log.e("", "getAllImageList: " + c.getString(3));
 
                 titleList.add(c.getString(3));
                 displayNameList.add(c.getString(1));
@@ -265,7 +266,7 @@ public class FlutterGallaryPlugin implements MethodCallHandler {
             allImageInfoList.put("URIList", allVideoList);
             allImageInfoList.put("DISPLAY_NAME", displayNameList);
             allImageInfoList.put("DATE_ADDED", dateAddedList);
-            allImageInfoList.put("TITLE", titleList);
+            allImageInfoList.put("DURATION", titleList);
 
         }
         return allImageInfoList;
