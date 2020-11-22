@@ -11,4 +11,8 @@ class FlutterGallaryPlugin {
     Map<dynamic,dynamic> object = await _channel.invokeMethod('getAllImages');
   return object;
   }
+  static Future<Object> get getAllVideos async {
+    Map<dynamic,dynamic> object = await _channel.invokeMethod('getAllVideos');
+  return object;
+  }
 }
